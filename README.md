@@ -1,1 +1,1 @@
-# sorting-vis-haruki4299.github.io
+# sorting visualizer
