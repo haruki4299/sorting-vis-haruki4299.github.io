@@ -62,8 +62,47 @@ document.body.querySelector('.merge-sort').addEventListener('click', () => {
         }
     }
     animate();
-   renderGraph(numArray);
 });
+
+document.body.querySelector('.insertion-sort').addEventListener('click', () => {
+    copyArray = numArray.slice();
+    const animation = []
+    insertionSort(copyArray, copyArray.length, animation)
+    // Execute Animation
+    var id = null;
+    function animate() {
+        clearInterval(id);
+        id = setInterval(frame, 10);
+        let animationIndex = 0;
+        function frame() {
+            if (animation.length == animationIndex) {
+                renderGraph(numArray, 'green');
+                clearInterval(id);
+            } else {
+                const index1 = animation[animationIndex][0];
+                const index2 = animation[animationIndex][1];
+                [numArray[index1], numArray[index2]] = [numArray[index2], numArray[index1]];
+                renderGraph(numArray);
+                ++animationIndex;
+            }
+        }
+    }
+    animate();
+});
+
+/* Sorting Methods */
+// Insertion Sort
+function insertionSort(array, n, animation) {
+    for (let i = 0; i < n; i++) {
+        let compare = array[i];
+        let j = i - 1;
+        while (j >= 0 && array[j+1] < array[j]) {
+            [array[j+1], array[j]] = [array[j], array[j+1]];
+            animation.push([j,j+1])
+            j = j - 1;
+        }
+    }
+}
 
 /* Merge Sort */
 // helper function
@@ -122,8 +161,6 @@ function mergeSort(array, minIndex, maxIndex, animation) {
     // Put together the two sorted arrays
     merge(array, minIndex, middle, maxIndex, animation);
 }
-
-/* Sorting Methods */
 /** Quick Sort */
 // Helper Function for quickSort()
 function partition (array, low, high, animation) {
