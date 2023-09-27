@@ -1,5 +1,4 @@
 let numArray = generateNewGraph();
-console.log("Here")
 renderGraph(numArray)
 
 
@@ -13,13 +12,53 @@ document.body.querySelector('.sort').addEventListener('click', () => {
     renderGraph(numArray);
 });
 
+document.body.querySelector('.quick-sort').addEventListener('click', () => {
+    quickSort(numArray, 0, numArray.length - 1)
+    renderGraph(numArray);
+});
+
+
+/* Sorting Methods */
+/** Quick Sort */
+// Helper Function for quickSort()
+function partition (array, low, high) {
+    // Choose the right most as pivot
+    const pivot = array[high];
+
+    // pointer for greater element
+    let i = low - 1;
+   
+    // iterate through all elements comparing with pivot
+    for (let j = low; j < high; ++j) {
+        if (array[j] <= pivot) {
+            i++;
+            [array[j], array[i]] = [array[i], array[j]];
+        }
+        
+    }
+    [array[i+1], array[high]] = [array[high], array[i+1]];
+    // return where the pivot belongs
+    return i + 1;
+}
+
+function quickSort(array, low, high) {
+    if (low < high) {
+        const pivotIndex = partition(numArray, low, high);
+        quickSort(array, low, pivotIndex - 1)
+        quickSort(array, pivotIndex + 1, high)
+    }
+    setTimeout(() => {
+        renderGraph(array);
+    }, 1000);
+}
+
 /* Display the Bar Graph based on numArray */
-function renderGraph () {
-    const chartContainer = document.getElementById('chart'); 
-    console.log(chartContainer)
+function renderGraph(array) {
+    console.log("Rendering")
+    const chartContainer = document.getElementById('chart');
     chartContainer.innerHTML = '';
 
-    numArray.forEach(number => {
+    array.forEach(number => {
         const bar = document.createElement('div');
         bar.className = 'chart-bar';
         bar.style.height = number + 'px'; // Set the height of the bar based on the number
@@ -36,7 +75,7 @@ function generateRandomInt() {
 /* Generate new number of arrays */
 function generateNewGraph () {
     const array = [];
-    for (let i = 0; i < 350; ++i) {
+    for (let i = 0; i < 100; ++i) {
         const randomInteger = generateRandomInt();
         array.push(randomInteger);
     } 
