@@ -1,0 +1,6 @@
+/* styles.css */
+.chart-bar {
+    display: inline-block;
+    width: 4px; /* Width of each bar */
+    background-color: blue; /* Bar color */
+}
