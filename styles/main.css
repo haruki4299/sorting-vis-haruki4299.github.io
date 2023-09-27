@@ -1,4 +1,18 @@
 /* styles.css */
+button {
+    margin: 5px;
+}
+
+.button-bar {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    margin-bottom: 20px;
+}
+
+.graph-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+}
 .chart-bar {
     display: inline-block;
     width: 10px; /* Width of each bar */
