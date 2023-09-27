@@ -13,15 +13,36 @@ document.body.querySelector('.sort').addEventListener('click', () => {
 });
 
 document.body.querySelector('.quick-sort').addEventListener('click', () => {
-    quickSort(numArray, 0, numArray.length - 1)
-    renderGraph(numArray);
+    copyArray = numArray.slice();
+    console.log(numArray);
+    const animation = []
+    quickSort(copyArray, 0, numArray.length - 1, animation)
+    var id = null;
+    function animate() {
+        clearInterval(id);
+        id = setInterval(frame, 10);
+        let animationIndex = 0;
+        function frame() {
+            if (animation.length == animationIndex) {
+                renderGraph(numArray, 'green');
+                clearInterval(id);
+            } else {
+                const index1 = animation[animationIndex][0];
+                const index2 = animation[animationIndex][1];
+                [numArray[index1], numArray[index2]] = [numArray[index2], numArray[index1]];
+                renderGraph(numArray);
+                ++animationIndex;
+            }
+        }
+    }
+    animate();
 });
 
 
 /* Sorting Methods */
 /** Quick Sort */
 // Helper Function for quickSort()
-function partition (array, low, high) {
+function partition (array, low, high, animation) {
     // Choose the right most as pivot
     const pivot = array[high];
 
@@ -33,24 +54,26 @@ function partition (array, low, high) {
         if (array[j] <= pivot) {
             i++;
             [array[j], array[i]] = [array[i], array[j]];
+            animation.push([i,j])
         }
         
     }
     [array[i+1], array[high]] = [array[high], array[i+1]];
+    animation.push([i+1,high])
     // return where the pivot belongs
     return i + 1;
 }
 
-function quickSort(array, low, high) {
+function quickSort(array, low, high, animation) {
     if (low < high) {
-        const pivotIndex = partition(numArray, low, high);
-        quickSort(array, low, pivotIndex - 1)
-        quickSort(array, pivotIndex + 1, high)
+        const pivotIndex = partition(array, low, high, animation);
+        quickSort(array, low, pivotIndex - 1, animation)
+        quickSort(array, pivotIndex + 1, high, animation)
     }
 }
 
 /* Display the Bar Graph based on numArray */
-function renderGraph(array) {
+function renderGraph(array, color = 'blue') {
     const chartContainer = document.getElementById('chart');
     chartContainer.innerHTML = '';
 
@@ -58,6 +81,7 @@ function renderGraph(array) {
         const bar = document.createElement('div');
         bar.className = 'chart-bar';
         bar.style.height = number + 'px'; // Set the height of the bar based on the number
+        bar.style.backgroundColor = color;
         chartContainer.appendChild(bar);
     });
 }
