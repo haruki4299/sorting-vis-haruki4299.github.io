@@ -47,14 +47,10 @@ function quickSort(array, low, high) {
         quickSort(array, low, pivotIndex - 1)
         quickSort(array, pivotIndex + 1, high)
     }
-    setTimeout(() => {
-        renderGraph(array);
-    }, 1000);
 }
 
 /* Display the Bar Graph based on numArray */
 function renderGraph(array) {
-    console.log("Rendering")
     const chartContainer = document.getElementById('chart');
     chartContainer.innerHTML = '';
 
