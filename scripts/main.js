@@ -14,9 +14,9 @@ document.body.querySelector('.sort').addEventListener('click', () => {
 
 document.body.querySelector('.quick-sort').addEventListener('click', () => {
     copyArray = numArray.slice();
-    console.log(numArray);
     const animation = []
     quickSort(copyArray, 0, numArray.length - 1, animation)
+    // Execute Animation
     var id = null;
     function animate() {
         clearInterval(id);
@@ -38,6 +38,90 @@ document.body.querySelector('.quick-sort').addEventListener('click', () => {
     animate();
 });
 
+document.body.querySelector('.merge-sort').addEventListener('click', () => {
+    copyArray = numArray.slice();
+    const animation = []
+    mergeSort(copyArray, 0, numArray.length - 1, animation)
+    // Execute Animation
+    var id = null;
+    function animate() {
+        clearInterval(id);
+        id = setInterval(frame, 10);
+        let animationIndex = 0;
+        function frame() {
+            if (animation.length == animationIndex) {
+                renderGraph(numArray, 'green');
+                clearInterval(id);
+            } else {
+                const index = animation[animationIndex][0];
+                const value = animation[animationIndex][1];
+                numArray[index] = value;
+                renderGraph(numArray);
+                ++animationIndex;
+            }
+        }
+    }
+    animate();
+   renderGraph(numArray);
+});
+
+/* Merge Sort */
+// helper function
+function merge(array, minIndex, middle, maxIndex, animation) {
+    // Length of first and second array
+    let len1 = middle - minIndex + 1;
+    let len2 = maxIndex - middle;
+
+    // Create temp arrays
+    let left = array.slice(minIndex, middle + 1);
+    let right = array.slice(middle + 1, maxIndex + 1);
+
+    // Merge the two arrays back to one
+    // Index on left
+    let i = 0;
+    //Index on right
+    let j = 0;
+    // Index of Merged Array
+    let k = minIndex;
+
+    while (i < len1 || j < len2) {
+        if (i >= len1) {
+            array[k] = right[j];
+            animation.push([k,right[j]])
+            j++;
+            k++;
+        } else if (j >= len2) {
+            array[k] = left[i];
+            animation.push([k,left[i]])
+            i++;
+            k++;
+        } else if (left[i] <= right[j]) {
+            array[k] = left[i];
+            animation.push([k,left[i]])
+            i++;
+            k++;
+        } else {
+            array[k] = right[j];
+            animation.push([k,right[j]])
+            j++;
+            k++;
+        }
+    }
+}
+
+// Merge Sort: Split Arrays (keep track of the indexes)
+function mergeSort(array, minIndex, maxIndex, animation) {
+    // Base case: if less than or equal to one element, return
+    if (minIndex >= maxIndex) {
+        return;
+    }
+    let middle = minIndex + Math.floor((maxIndex - minIndex) / 2);
+    // Split arrays and sort each
+    mergeSort(array, minIndex, middle, animation);
+    mergeSort(array, middle + 1, maxIndex, animation);
+    // Put together the two sorted arrays
+    merge(array, minIndex, middle, maxIndex, animation);
+}
 
 /* Sorting Methods */
 /** Quick Sort */
