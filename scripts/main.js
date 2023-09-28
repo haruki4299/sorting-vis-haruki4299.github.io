@@ -90,7 +90,98 @@ document.body.querySelector('.insertion-sort').addEventListener('click', () => {
     animate();
 });
 
+document.body.querySelector('.selection-sort').addEventListener('click', () => {
+    copyArray = numArray.slice();
+    const animation = []
+    selectionSort(copyArray, animation)
+    // Execute Animation
+    var id = null;
+    function animate() {
+        clearInterval(id);
+        id = setInterval(frame, 40);
+        let animationIndex = 0;
+        function frame() {
+            if (animation.length == animationIndex) {
+                renderGraph(numArray, 'green');
+                clearInterval(id);
+            } else {
+                const index1 = animation[animationIndex][0];
+                const index2 = animation[animationIndex][1];
+                [numArray[index1], numArray[index2]] = [numArray[index2], numArray[index1]];
+                renderGraph(numArray);
+                ++animationIndex;
+            }
+        }
+    }
+    animate();
+});
+
+document.body.querySelector('.bubble-sort').addEventListener('click', () => {
+    copyArray = numArray.slice();
+    const animation = [];
+    bubbleSort(copyArray, animation);
+    // Execute Animation
+    var id = null;
+    function animate() {
+        clearInterval(id);
+        id = setInterval(frame, 10);
+        let animationIndex = 0;
+        function frame() {
+            if (animation.length == animationIndex) {
+                renderGraph(numArray, 'green');
+                clearInterval(id);
+            } else {
+                const index1 = animation[animationIndex][0];
+                const index2 = animation[animationIndex][1];
+                [numArray[index1], numArray[index2]] = [numArray[index2], numArray[index1]];
+                renderGraph(numArray);
+                ++animationIndex;
+            }
+        }
+    }
+    animate();
+});
+
 /* Sorting Methods */
+
+// Bubble Sort
+function bubbleSort(array, animation) {
+    len1 = array.length;
+    // Sort largest element to correct place
+    // Swap larger elements to the right
+    for (let i = 0; i < len1; i++) {
+        // For optimization
+        let swapped = false;
+        for (let j = 0; j < len1; j++) {
+            if (array[j] > array[j+1]) {
+                [array[j], array[j+1]] = [array[j+1], array[j]];
+                animation.push([j,j+1]);
+                swapped = true;
+            }
+        }
+        if (swapped == false) {
+            break;
+        }
+    }
+}
+
+// Selection Sort
+function selectionSort(array, animation) {
+    len1 = array.length;
+    for (let i = 0; i < len1; i++) {
+        let j = i;
+        let minIndex = i;
+        while (j < len1) {
+            if (array[minIndex] > array[j]) {
+                minIndex = j;
+            }
+            j++;
+        }
+        [array[i], array[minIndex]] = [array[minIndex], array[i]];
+        animation.push([i,minIndex]);
+    }
+}
+
 // Insertion Sort
 function insertionSort(array, n, animation) {
     for (let i = 0; i < n; i++) {
